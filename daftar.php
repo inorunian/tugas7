@@ -61,16 +61,19 @@
                 text-align: center;
                 margin-top: 20px;
             }
-            .back-button a{
+            .back-button button{
                 background-color: #007bff;
                 color: white;
                 padding: 12px 24px;
                 text-decoration: none;
+                border: none;
                 border-radius: 5px;
                 display: inline-block;
+                cursor: pointer;
                 transition: background-color 0.3s;
+                font-size: 16px;
             }
-            .back-button a:hover{
+            .back-button button:hover{
                 background-color: #0056b3;
             }
         </style>
@@ -80,19 +83,53 @@
             <h1>Data Registrasi User</h1>
             
             <?php if (isset($_POST['submit'])): ?>
-                <div class="success-message">
-                    Registrasi Berhasil!
-                </div>
+                <?php
+                $nama_depan = isset($_POST['nama_depan']) ? $_POST['nama_depan'] : '';
+                $nama_belakang = isset($_POST['nama_belakang']) ? $_POST['nama_belakang'] : '';
+                $asal_kota = isset($_POST['asal_kota']) ? $_POST['asal_kota'] : '';
+                $umur = isset($_POST['umur']) ? (int)$_POST['umur'] : 0;
                 
-                <div class="back-button">
-                    <a href="index.html">Kembali ke Form Registrasi</a>
-                </div>
+                if ($umur < 10) {
+                    echo '<div style="text-align: center; color: #dc3545; padding: 20px;">
+                        <h3>Error: Umur minimal 10 tahun</h3>
+                        <p>Silakan isi form registrasi dengan umur minimal 10 tahun.</p>
+                        <div class="back-button">
+                            <button onclick="window.location.href=\'http://localhost/index.html\'">Kembali ke Form Registrasi</button>
+                        </div>
+                    </div>';
+                } else {
+                    echo '<div class="success-message">
+                        Registrasi Berhasil!
+                    </div>';
+                    
+                    echo '<table>';
+                    echo '<tr><th>No</th><th>Nama Depan</th><th>Nama Belakang</th><th>Asal Kota</th><th>Umur</th></tr>';
+                    
+                    for ($i = 1; $i <= $umur; $i++) {
+                        if ($i % 2 == 1 && $i != 7 && $i != 13) {
+                            echo '<tr>';
+                            echo '<td>' . $i . '</td>';
+                            echo '<td>' . htmlspecialchars($nama_depan) . '</td>';
+                            echo '<td>' . htmlspecialchars($nama_belakang) . '</td>';
+                            echo '<td>' . htmlspecialchars($asal_kota) . '</td>';
+                            echo '<td>' . $umur . '</td>';
+                            echo '</tr>';
+                        }
+                    }
+                    
+                    echo '</table>';
+                    
+                    echo '<div class="back-button">
+                        <button onclick="window.location.href=\'http://localhost/index.html\'">Kembali ke Form Registrasi</button>
+                    </div>';
+                }
+                ?>
             <?php else: ?>
                 <div style="text-align: center; color: #dc3545; padding: 20px;">
                     <h3>Error: Data tidak ditemukan</h3>
                     <p>Silakan isi form registrasi terlebih dahulu.</p>
                     <div class="back-button">
-                        <a href="index.html">Kembali ke Form Registrasi</a>
+                        <button onclick="window.location.href=\'http://localhost/index.html\'">Kembali ke Form Registrasi</button>
                     </div>
                 </div>
             <?php endif; ?>
