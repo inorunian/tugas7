@@ -1,64 +1,138 @@
 <html>
     <head>
-        <title>::Registration Page::</title>
+        <title>::Data Registrasi::</title>
         <style type="text/css">
             body{
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                height: 100vh;
+                min-height: 100vh;
                 background-size: cover;
                 background-image: url("https://cdn.arstechnica.net/wp-content/uploads/2023/06/bliss-update-1440x960.jpg");
+                font-family: Arial, Helvetica, sans-serif;
+                margin: 0;
+                padding: 20px;
             }
-            table{
+            .container{
                 background-color: white;
                 border: 3px solid grey;
-                padding: 20px;
+                padding: 30px;
                 border-radius: 10px;
-                font-family:Arial, Helvetica, sans-serif;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                max-width: 600px;
+                width: 100%;
+            }
+            h1{
+                text-align: center;
+                color: #333;
+                margin-bottom: 30px;
+                font-size: 28px;
+            }
+            .success-message{
+                background-color: #d4edda;
+                color: #155724;
+                padding: 15px;
+                margin-bottom: 20px;
+                border: 1px solid #c3e6cb;
+                border-radius: 5px;
+                text-align: center;
+                font-weight: bold;
+            }
+            table{
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+            th, td{
+                padding: 12px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+            th{
+                background-color: #f8f9fa;
+                font-weight: bold;
+                color: #333;
+                width: 30%;
             }
             td{
-                padding: 5px;
+                color: #666;
             }
-            button{
-                background-color: greenyellow;
-                padding: 10px;
+            .back-button{
+                text-align: center;
+                margin-top: 20px;
+            }
+            .back-button button{
+                background-color: #007bff;
+                color: white;
+                padding: 12px 24px;
+                text-decoration: none;
+                border: none;
                 border-radius: 5px;
+                display: inline-block;
+                cursor: pointer;
+                transition: background-color 0.3s;
+                font-size: 16px;
+            }
+            .back-button button:hover{
+                background-color: #0056b3;
             }
         </style>
     </head>
     <body>
-        <form action="daftar.php" method="post">
-            <table>
-                <tr>
-                    <td colspan="2" style="text-align: center; font-size: 24px; font-weight: bold; padding-bottom: 20px;">
-                        Form Registrasi User
-                    </td>
-                </tr>
-                <tr>
-                    <td>Nama Depan:</td>
-                    <td><input type="text" required style="padding: 8px; width: 200px; border: 1px solid #ccc; border-radius: 4px;"></td>
-                </tr>
-                <tr>
-                    <td>Nama Belakang:</td>
-                    <td><input type="text" required style="padding: 8px; width: 200px; border: 1px solid #ccc; border-radius: 4px;"></td>
-                </tr>
-                <tr>
-                    <td>Asal Kota:</td>
-                    <td><input type="text" required style="padding: 8px; width: 200px; border: 1px solid #ccc; border-radius: 4px;"></td>
-                </tr>
-                <tr>
-                    <td>Umur:</td>
-                    <td><input type="number" name="umur" required style="padding: 8px; width: 200px; border: 1px solid #ccc; border-radius: 4px;"></td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align: center; padding-top: 20px;">
-                        <button type="submit" name="submit" style="background-color: #4CAF50; color: white; padding: 12px 24px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
-                            Daftar
-                        </button>
-                    </td>
-                </tr>
-            </table>
-        </form>
+        <div class="container">
+            <h1>Data Registrasi User</h1>
+            
+            <?php if (isset($_POST['submit'])): ?>
+                <?php  // Perbaikan: Tambahkan <?php di sini (sebelumnya ?php)
+                $nama_depan = $_POST['nama_depan'];
+                $nama_belakang = $_POST['nama_belakang'];
+                $asal_kota = $_POST['asal_kota'];
+                $umur = (int)$_POST['umur'];
+                
+                if ($umur < 10) {
+                    echo '<div style="text-align: center; color: #dc3545; padding: 20px;">
+                        <h3>Error: Umur minimal 10 tahun</h3>
+                        <p>Silakan isi form registrasi dengan umur minimal 10 tahun.</p>
+                        <div class="back-button">
+                            <button onclick="window.location.href=\'http://localhost:8000/index.php\'">Kembali ke Form Registrasi</button>  // Perbaikan: Lengkapi link dan ubah ke button dengan path absolut
+                        </div>
+                    </div>';
+                } else {
+                    echo '<div class="success-message">
+                        Registrasi Berhasil!
+                    </div>';
+                    
+                    echo '<table>';
+                    echo '<tr><th>No</th><th>Nama Depan</th><th>Nama Belakang</th><th>Asal Kota</th><th>Umur</th></tr>';
+                    
+                    for ($i = 1; $i <= $umur; $i++) {
+                        if ($i % 2 == 1 && $i != 7 && $i != 13) {
+                            echo '<tr>';
+                            echo '<td>' . $i . '</td>';
+                            echo '<td>' . htmlspecialchars($nama_depan) . '</td>';
+                            echo '<td>' . htmlspecialchars($nama_belakang) . '</td>';
+                            echo '<td>' . htmlspecialchars($asal_kota) . '</td>';
+                            echo '<td>' . $umur . '</td>';
+                            echo '</tr>';
+                        }
+                    }
+                    
+                    echo '</table>';
+                    
+                    echo '<div class="back-button">
+                        <button onclick="window.location.href=\'http://localhost:8000/index.php\'">Kembali ke Form Registrasi</button>  // Perbaikan: Ubah ke button dengan path absolut
+                    </div>';
+                }
+                ?>
+            <?php else: ?>
+                <div style="text-align: center; color: #dc3545; padding: 20px;">
+                    <h3>Error: Data tidak ditemukan</h3>
+                    <p>Silakan isi form registrasi terlebih dahulu.</p>
+                    <div class="back-button">
+                        <button onclick="window.location.href=\'http://localhost:8000/index.php\'">Kembali ke Form Registrasi</button>  // Perbaikan: Ubah ke button dengan path absolut
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
     </body>
 </html>
